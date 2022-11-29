@@ -1,10 +1,12 @@
 # Jogo do Bicho
 
-PARTICIPANTES: Christianny, André Filipe, João Gabriel Dantas, Haul Muller, Gabriel Cruz.
-
+### PARTICIPANTES: Christianny, André Filipe, João Gabriel Dantas, Haul Muller, Gabriel Cruz.
+```
 Aplicação de Apostas utilizando a linguagem de programação Python e a biblioteca Pygame.
 O storytelling da aplicação é baseado na história do livro Revolução dos Bichos.
 Os personagens do jogo, em que poderão ser feitas as apostas, são:
+```
+```
 Major Porco
 Porco bola de neve
 Porco Napoleão 
@@ -16,4 +18,7 @@ Burro Benjamin
 Cabra Maricota
 Corvo Moisés
 Ovelhas
+```
+```
 O jogo tem como objetivo prover diversão através de apostas, sem que seja necessário criar estratégias, por se tratar de um jogo de azar.
+```
