@@ -1,4 +1,7 @@
 # Jogo do Bicho
+
+PARTICIPANTES: Christianny, André Filipe, João Gabriel Dantas, Haul Muller, Gabriel Cruz.
+
 Aplicação de Apostas utilizando a linguagem de programação Python e a biblioteca Pygame.
 O storytelling da aplicação é baseado na história do livro Revolução dos Bichos.
 Os personagens do jogo, em que poderão ser feitas as apostas, são:
