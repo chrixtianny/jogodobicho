@@ -50,6 +50,10 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             exit()
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            Botao = pygame.mouse.get_pos()
+            print("Teste ação do botão")
+
     tela.blit(ImagemFundo, (0,0))
     ButtonGrups.update()
     ButtonGrups.draw(tela)
