@@ -1,4 +1,5 @@
 import pygame
+from Botao import Button
 from pygame.locals import *
 from sys import exit
 
@@ -9,52 +10,46 @@ altura = 800
 
 tela = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption("Jogo do Bicho")
-ImagemFundo = pygame.image.load('imagens/fundojogo.png')
+ImagemFundo = pygame.image.load("imagens/fundojogo.png")
+ImagemFundo2 = pygame.image.load("imagens/fundojogodobicho.png")
 
-class Botao(pygame.sprite.Sprite):
-    def __init__(self, *groups):
+def get_font(size):
+    return pygame.font.Font("imagens/GillSansUltraBold.ttf", size)
 
-        super().__init__(*groups)
+def telaAposta():
+    while True:
+        tela.blit(ImagemFundo2, (0,0))
+        pos_mouse_jogar = pygame.mouse.get_pos()
 
-        self.image = pygame.image.load("imagens/botao1.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, [270, 84])
-        self.rect = pygame.Rect(190, 49, 190, 49)
-        self.rect = self.image.get_rect()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            
+        pygame.display.update()
 
-        self.image1 = pygame.image.load("imagens/botao1.png").convert_alpha()
-        self.image2 = pygame.image.load("imagens/botao2.png").convert_alpha()
+def menu():
+    while True:
+        
+        tela.blit(ImagemFundo, (0,0))
 
-        self.touche = True
+        pos_mouse_menu = pygame.mouse.get_pos()
 
-    def update(self):
-        self.mouse = pygame.mouse.get_pressed()
-        self.MousePos = pygame.mouse.get_pos()
+        botao_jogar = Button(image=pygame.image.load("imagens/botao1.png"), pos=(239, 548), 
+                            text_input="JOGAR", font=get_font(30), base_color="#f5f7f5", hovering_color="Green")
 
-        if self.rect.collidepoint(self.MousePos):
-            if self.mouse[0]:
-                self.touche = True
-                pygame.mouse.get_rel()
-                self.image = self.image2
-            else:
-                self.touche = False
-                self.image = self.image1
+        for button in [botao_jogar]:
+            button.changeColor(pos_mouse_menu)
+            button.update(tela)
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if botao_jogar.checkForInput(pos_mouse_menu):
+                    telaAposta()
 
-        pass
+        pygame.display.update()
 
-ButtonGrups = pygame.sprite.Group()
-Botton_1 = Botao(ButtonGrups)
-Botton_1.rect.center = (239, 548)
-
-while True:
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            exit()
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            Botao = pygame.mouse.get_pos()
-            print("Teste ação do botão")
-
-    tela.blit(ImagemFundo, (0,0))
-    ButtonGrups.update()
-    ButtonGrups.draw(tela)
-    pygame.display.update()
+menu()
