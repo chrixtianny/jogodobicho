@@ -2,6 +2,7 @@ import pygame
 import random as r
 import settings as s
 import numpy as np
+import sys
 from botao import botao
 from pygame.locals import *
 from sys import exit
@@ -71,15 +72,15 @@ def telaGanhou():
         numeros = font2.render(str(s.numeroSorteado), True, ("#ff0000"))
         numeros2 = font2.render(str(s.numeroAposta), True, ("#ff0000"))
 
-        if s.numeroAnimal == 0:
-            s.tela.blit(numeros, (105, 539))
+        if s.multiplicador == 18:
+            s.tela.blit(numeros, (217, 546))
         else:
-            s.tela.blit(numeros, (95, 539))
+            s.tela.blit(numeros, (142, 548))
 
         if s.numeroAnimal == 0:
-            s.tela.blit(numeros2, (105, 629))
+            s.tela.blit(numeros2, (156, 629))
         else:
-            s.tela.blit(numeros2, (95, 629))
+            s.tela.blit(numeros2, (120, 629))
 
         s.coin = pygame.transform.scale(s.coin, (40, 40))
         dinheiro = font2.render(str(s.carteira), True, (255,255,255))
@@ -117,10 +118,13 @@ def telaPerdeu():
         numeros = font2.render(str(s.numeroSorteado), True, ("#ff0000"))
         numeros2 = font2.render(str(s.numeroAposta), True, ("#ff0000"))
 
-        s.tela.blit(numeros, (142, 548))
+        if s.multiplicador == 18:
+            s.tela.blit(numeros, (217, 546))
+        else:
+            s.tela.blit(numeros, (142, 548))
 
         if s.numeroAnimal == 0:
-            s.tela.blit(numeros2, (161, 629))
+            s.tela.blit(numeros2, (156, 629))
         else:
             s.tela.blit(numeros2, (120, 629))
 
@@ -157,8 +161,8 @@ def telaAposta():
         s.coin = pygame.transform.scale(s.coin, (40, 40))
         dinheiro = font2.render(str(s.carteira), True, (255,255,255))
         s.tela.blit(s.ImagemEscolha, (0,0))
-        s.tela.blit(dinheiro, (390, 50))
-        s.tela.blit(s.coin, (350,40))
+        s.tela.blit(dinheiro, (390, 145))
+        s.tela.blit(s.coin, (350,135))
         
         pos_mouse_jogar = pygame.mouse.get_pos()
 
@@ -316,6 +320,10 @@ def botoes_valores():
     while True:
 
         s.tela.blit(s.ImagemValor, (0,0))
+        s.coin = pygame.transform.scale(s.coin, (40, 40))
+        dinheiro = font2.render(str(s.carteira), True, (255,255,255))
+        s.tela.blit(dinheiro, (390, 145))
+        s.tela.blit(s.coin, (350,135))
         numeros = font2.render(str(s.numeroAposta), True, ("#ff0000"))
         
         if s.numeroAnimal == 0:
@@ -360,7 +368,7 @@ def botoes_valores():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_aposta100.checkForInput(pos_mouse_menu):
-                    if s.carteira <= 0:
+                    if s.carteira <= 0 or s.carteira < 100:
                         telaSaldo()
                     else: 
                         s.valorAposta = 100
@@ -390,10 +398,24 @@ def botoes_valores():
         pygame.display.update()
 
 def selecaoPremio():
+    font2 = pygame.font.SysFont(None, 40)
+    
     while True:
         s.tela.blit(s.ImagemPremio, (0,0))
 
+        s.coin = pygame.transform.scale(s.coin, (40, 40))
+        dinheiro = font2.render(str(s.carteira), True, ("#FF4500"))
+        s.tela.blit(dinheiro, (230, 235))
+        s.tela.blit(s.coin, (190,225))
+
         pos_mouse_menu = pygame.mouse.get_pos()
+
+        botao_voltar = botao(image=pygame.image.load("assets/botaovoltar.png"), pos=(430, 750), 
+                            text_input=".", font=get_font(25), base_color="#ffffff", hovering_color="Red")
+
+        for button in [botao_voltar]:
+            button.changeColor(pos_mouse_menu)
+            button.update(s.tela)
 
         botao_primeiroPremio = botao(image=pygame.image.load("assets/botao1.png"), pos=(240, 475), 
                             text_input="1°", font=get_font(30), base_color="#f5f7f5", hovering_color="Green")
@@ -423,6 +445,11 @@ def selecaoPremio():
                 if botao_primeiroQuintoPremio.checkForInput(pos_mouse_menu):
                     s.multiplicador = 3.6
                     apostar()
+            
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if botao_voltar.checkForInput(pos_mouse_menu):
+                    s.valorAposta = 0
+                    botoes_valores() 
 
         pygame.display.update()
 
@@ -445,14 +472,24 @@ def apostar():
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_apostar.checkForInput(pos_mouse_apostar):
-                    s.numeroSorteado = np.random.randint(1, 56, (5))
-                    numerosAcertados = set(s.numeroAposta).intersection(s.numeroSorteado)
-                    if numerosAcertados:
-                        s.carteira =  s.carteira + (s.valorAposta * s.multiplicador)
-                        telaGanhou()
+                    if s.multiplicador == 18:
+                        s.numeroSorteado = np.random.randint(1, 56, (1))
+                        numerosAcertados = set(s.numeroAposta).intersection(s.numeroSorteado)
+                        if numerosAcertados:
+                            s.carteira =  s.carteira + (s.valorAposta * s.multiplicador)
+                            telaGanhou()
+                        else:
+                            s.carteira = s.carteira - s.valorAposta
+                            telaPerdeu()
                     else:
-                        s.carteira = s.carteira - s.valorAposta
-                        telaPerdeu()
+                        s.numeroSorteado = np.random.randint(1, 56, (5))
+                        numerosAcertados = set(s.numeroAposta).intersection(s.numeroSorteado)
+                        if numerosAcertados:
+                            s.carteira =  s.carteira + (s.valorAposta * s.multiplicador)
+                            telaGanhou()
+                        else:
+                            s.carteira = s.carteira - s.valorAposta
+                            telaPerdeu()
        
         pygame.display.update() 
 
@@ -461,13 +498,21 @@ def menu():
         
         s.tela.blit(s.ImagemFundo, (0,0))
 
-        pos_mouse_menu = pygame.mouse.get_pos()
+        pos_mouse_tela = pygame.mouse.get_pos()
 
         botao_jogar = botao(image=pygame.image.load("assets/botao1.png"), pos=(239, 548), 
                             text_input="JOGAR", font=get_font(30), base_color="#f5f7f5", hovering_color="Green")
 
         for button in [botao_jogar]:
-            button.changeColor(pos_mouse_menu)
+            button.changeColor(pos_mouse_tela)
+            button.update(s.tela)
+
+        s.ImagemBotao = pygame.transform.scale(s.ImagemBotao, (220, 74))
+        botao_voltar = botao(image=s.ImagemBotao, pos=(241, 730), 
+                        text_input="VOLTAR", font=get_font(25), base_color="#f5f7f5", hovering_color="Green")
+
+        for button in [botao_voltar]:
+            button.changeColor(pos_mouse_tela)
             button.update(s.tela)
         
         for event in pygame.event.get():
@@ -475,9 +520,50 @@ def menu():
                 pygame.quit()
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if botao_jogar.checkForInput(pos_mouse_menu):
+                if botao_jogar.checkForInput(pos_mouse_tela):
                     telaAposta()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if botao_voltar.checkForInput(pos_mouse_tela):
+                    historico()
 
         pygame.display.update()
+
+def historico():
+    ultimos_sorteios = open('historico_sorteio.txt', "r")
+    font = pygame.font.Font('assets/GillSansUltraBold.ttf', 35)
+
+    pos_mouse_tela = pygame.mouse.get_pos()
+
+    s.ImagemBotao = pygame.transform.scale(s.ImagemBotao, (220, 74))
+    botao_voltar = botao(image=s.ImagemBotao, pos=(241, 730), 
+                        text_input="VOLTAR", font=get_font(25), base_color="#f5f7f5", hovering_color="Green")
+
+    for button in [botao_voltar]:
+        button.changeColor(pos_mouse_tela)
+        button.update(s.tela)
+
+    pygame.display.update()
+    for line in ultimos_sorteios:
+        text = line
+
+    ativo = True
+    while ativo:
+        for event in pygame.event.get():
+            if event.type ==pygame.QUIT:
+                ativo = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if botao_voltar.checkForInput(pos_mouse_tela):
+                    menu()
+            s.tela.blit(s.ImagemHistorico, (0,0))
+
+            img = font.render(line, True, 'White')
+            s.tela.blit(img, (145, 400))
+
+        pygame.display.update()
+
+    ultimos_sorteios.close()
+
+    pygame.quit()
+    sys.exit()
 
 menu()
