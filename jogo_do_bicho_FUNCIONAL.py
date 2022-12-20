@@ -3,9 +3,10 @@ import random as r
 import settings as s
 import numpy as np
 import sys
-from botao import botao
+from Botao import botao
 from pygame.locals import *
 from sys import exit
+import msc
 
 pygame.init()
 
@@ -13,6 +14,9 @@ def get_font(size):
     return pygame.font.Font("assets/GillSansUltraBold.ttf", size)
 
 def telaSaldo():
+
+    msc.som_saldoInsuficiente()
+
     while True:
         s.ImagemBotao = pygame.transform.scale(s.ImagemBotao, (280, 74))
         s.tela.blit(s.ImagemSaldo, (0,0))
@@ -32,13 +36,17 @@ def telaSaldo():
                     exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if botao_adicionar.checkForInput(pos_mouse_tela):
+                        s.som_click.play()
                         s.carteira = s.carteira + 500
                         telaAposta()
 
         pygame.display.update()
 
-'''
+
 def telaAviso():
+
+    msc.Aposta()
+
     while True:
         s.ImagemBotao = pygame.transform.scale(s.ImagemBotao, (250, 74))
         s.tela.blit(s.ImagemAviso, (0,0))
@@ -61,9 +69,12 @@ def telaAviso():
                         telaAposta()
 
         pygame.display.update()
-'''
+
 
 def telaGanhou():
+
+    msc.musica_ganhou()
+
     font2 = pygame.font.SysFont(None, 40)
 
     while True:
@@ -110,6 +121,9 @@ def telaGanhou():
         pygame.display.update()
 
 def telaPerdeu():
+
+    msc.musica_perdeu()
+
     font2 = pygame.font.SysFont(None, 40)
 
     while True:
@@ -149,12 +163,16 @@ def telaPerdeu():
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_voltar.checkForInput(pos_mouse_tela):
+                    s.som_click.play()
                     s.numeroAposta = []
                     telaAposta()
 
         pygame.display.update()
 
 def telaAposta():
+
+    msc.tela_aposta()
+
     font2 = pygame.font.SysFont(None, 40)
 
     while True:
@@ -250,14 +268,14 @@ def telaAposta():
             button.changeColor(pos_mouse_jogar)
             button.update(s.tela)
 
-        '''
+        
         botao_valores = botao(image=pygame.image.load("assets/botao2.png"), pos=(240, 738), 
                             text_input="VALORES", font=get_font(25), base_color="#f5f7f5", hovering_color="Green")
 
         for button in [botao_valores]:
             button.changeColor(pos_mouse_jogar)
             button.update(s.tela)
-        '''
+        
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -265,61 +283,73 @@ def telaAposta():
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_voltar.checkForInput(pos_mouse_jogar):
+                    s.som_click.play()
                     s.numeroAposta = []
                     menu()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_major.checkForInput(pos_mouse_jogar):
+                    s.som_major_porco.play()
                     s.numeroAposta = [1,2,3,4,5]
                     s.numeroAnimal = 0
                     botoes_valores()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_cavalo.checkForInput(pos_mouse_jogar):
+                    s.som_cavalo_sansao.play()
                     s.numeroAposta = [6,7,8,9,10]
                     s.numeroAnimal = 0
                     botoes_valores()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_cabra.checkForInput(pos_mouse_jogar):
+                    s.som_cabra_maricota.play()
                     s.numeroAposta = [11,12,13,14,15]
                     s.numeroAnimal = 1
                     botoes_valores()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_boladeneve.checkForInput(pos_mouse_jogar):
+                    s.som_porco_bola_de_neve.play()
                     s.numeroAposta = [16,17,18,19,20]
                     s.numeroAnimal = 1
                     botoes_valores()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_burro.checkForInput(pos_mouse_jogar):
+                    s.som_burro_benjamin.play()
                     s.numeroAposta = [21,22,23,24,25]
                     s.numeroAnimal = 1
                     botoes_valores()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_quiteria.checkForInput(pos_mouse_jogar):
+                    s.som_egua_quiteria.play()
                     s.numeroAposta = [26,27,28,29,30]
                     s.numeroAnimal = 1
                     botoes_valores()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_mimosa.checkForInput(pos_mouse_jogar):
+                    s.som_egua_mimosa.play()
                     s.numeroAposta = [31,32,33,34,35]
                     s.numeroAnimal = 1
                     botoes_valores()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_corvo.checkForInput(pos_mouse_jogar):
+                    s.som_corvo_moises.play()
                     s.numeroAposta = [36,37,38,39,40]
                     s.numeroAnimal = 1
                     botoes_valores()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_ovelhas.checkForInput(pos_mouse_jogar):
+                    s.som_ovelhas.play()
                     s.numeroAposta = [41,42,43,44,45]
                     s.numeroAnimal = 1
                     botoes_valores()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_cachorro.checkForInput(pos_mouse_jogar):
+                    s.som_cachorro_catavento.play()
                     s.numeroAposta = [46,47,48,49,50]
                     s.numeroAnimal = 1
                     botoes_valores()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_napoleao.checkForInput(pos_mouse_jogar):
+                    s.som_porco_napoleao.play()
                     s.numeroAposta = [51,52,53,54,55]
                     s.numeroAnimal = 1
                     botoes_valores()
@@ -380,6 +410,7 @@ def botoes_valores():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_aposta100.checkForInput(pos_mouse_menu):
+                    s.som_click.play()
                     if s.carteira <= 0 or s.carteira < 100:
                         telaSaldo()
                     else: 
@@ -388,6 +419,7 @@ def botoes_valores():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_aposta250.checkForInput(pos_mouse_menu):
+                    s.som_click.play()
                     if s.carteira <= 0 or s.carteira < 250:
                         telaSaldo()
                     else: 
@@ -396,6 +428,7 @@ def botoes_valores():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_aposta500.checkForInput(pos_mouse_menu):
+                    s.som_click.play()
                     if s.carteira <= 0 or s.carteira < 500:
                         telaSaldo()
                     else: 
@@ -404,6 +437,7 @@ def botoes_valores():
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_voltar.checkForInput(pos_mouse_menu):
+                    s.som_click.play()
                     s.numeroAposta = []
                     telaAposta()
 
@@ -450,16 +484,19 @@ def selecaoPremio():
                 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_primeiroPremio.checkForInput(pos_mouse_menu):
+                    s.som_click.play()
                     s.multiplicador = 18
                     apostar()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_primeiroQuintoPremio.checkForInput(pos_mouse_menu):
+                    s.som_click.play()
                     s.multiplicador = 3.6
                     apostar()
             
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_voltar.checkForInput(pos_mouse_menu):
+                    s.som_click.play()
                     s.valorAposta = 0
                     botoes_valores() 
 
@@ -484,6 +521,7 @@ def apostar():
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_apostar.checkForInput(pos_mouse_apostar):
+                    s.som_click.play()
                     if s.multiplicador == 18:
                         s.numeroSorteado = np.random.randint(1, 56, (1))
                         s.lista_historico.append(s.numeroSorteado)
@@ -516,6 +554,9 @@ def apostar():
         pygame.display.update() 
 
 def menu():
+
+    msc.musica_menu()
+
     while True:
         
         s.tela.blit(s.ImagemFundo, (0,0))
@@ -543,9 +584,11 @@ def menu():
                 exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_jogar.checkForInput(pos_mouse_tela):
+                    s.som_click.play()
                     telaAposta()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if botao_historico.checkForInput(pos_mouse_tela):
+                    s.som_click.play()
                     historico()
 
         pygame.display.update()
