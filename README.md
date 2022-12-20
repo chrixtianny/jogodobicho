@@ -3,8 +3,7 @@
 ### PARTICIPANTES: Christianny, André Filipe, João Gabriel Dantas, Haul Muller, Gabriel Cruz.
 ```
 Aplicação de Apostas utilizando a linguagem de programação Python e a biblioteca Pygame.
-O storytelling da aplicação é baseado na história do livro Revolução dos Bichos.
-Os personagens do jogo, em que poderão ser feitas as apostas, são:
+Os personagens do jogo, em que poderão ser feitas as apostas, são baseados no livro Revolução dos Bichos:
 ```
 ```
 Major Porco
@@ -20,5 +19,6 @@ Corvo Moisés
 Ovelhas
 ```
 ```
-O jogo tem como objetivo prover diversão através de apostas, sem que seja necessário criar estratégias, por se tratar de um jogo de azar.
+O jogo tem como objetivo prover diversão através de apostas.
+Sem que seja necessário criar estratégias, por se tratar de um jogo de azar.
 ```
